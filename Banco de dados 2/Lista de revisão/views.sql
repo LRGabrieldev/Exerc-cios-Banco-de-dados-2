@@ -608,12 +608,24 @@ INSERT INTO participacao (idcompeticao, idcompetidor,
 (7, 59, '3', 'sets'),
 (7, 60, '2', 'sets');
 
---a) Visão 'nadadores' contendo (nome da pesssoa e o nome da categoria) dos atletas inscritos na
-modalidade 'Natacao';
+/*a) Visão 'nadadores' contendo (nome da pesssoa e o nome da categoria) dos atletas inscritos na
+modalidade 'Natacao';*/
 
-CREATE OR REPLACE VIEW nadadores AS 
-SELECT p.nomepessoa, c.nomecat, m.nomemod
-FROM pessoa p, categoria c, modalidade m;
+CREATE OR REPLACE VIEW nadadores(nome, categoria) AS
+SELECT pessoa.nomepessoa, categoria.nomecat
+FROM pessoa, categoria, modalidade, inscricao, atleta, competidor
+WHERE modalidade.nomemod = 'Natacao' AND 
+modalidade.idmod = categoria.idmod AND
+categoria.idcat = inscricao.idcat AND
+competidor.idcompetidor = inscricao.idcompetidor AND
+atleta.idcompetidor = competidor.idcompetidor AND
+pessoa.cpf = atleta.cpf;
 
---b) Visão 'participantes_modalidade1' contendo (nome da categoria e nome do participante) dos
-participantes inscritos nas categorias. Os participantes são atletas ou equipes; 
+SELECT * FROM nadadores;
+
+/*b) Visão 'participantes_modalidade1' contendo (nome da categoria e nome do participante) dos
+participantes inscritos nas categorias. Os participantes são atletas ou equipes;*/
+
+
+
+
