@@ -626,6 +626,20 @@ SELECT * FROM nadadores;
 /*b) Visão 'participantes_modalidade1' contendo (nome da categoria e nome do participante) dos
 participantes inscritos nas categorias. Os participantes são atletas ou equipes;*/
 
+CREATE OR REPLACE VIEW participantes_modalidades1 (participante, categoria) AS
+SELECT pessoa.nomepessoa ,categoria.nomecat
+FROM categoria, pessoa, inscricao, atleta
+WHERE categoria.idcat = inscricao.idcat AND
+	  inscricao.idcompetidor = atleta.idcompetidor AND
+	  pessoa.cpf = atleta.cpf 
+UNION
+SELECT equipe.nomeequi ,categoria.nomecat
+FROM categoria, pessoa, inscricao, equipe
+WHERE categoria.idcat = inscricao.idcat AND
+	  inscricao.idcompetidor = equipe.idcompetidor
+ORDER BY nomepessoa;
 
+SELECT * FROM participantes_modalidades1;
 
+/*c) Visão 'patrocinios_evento' contendo soma de valor dos patrocínios para o evento*/
 
