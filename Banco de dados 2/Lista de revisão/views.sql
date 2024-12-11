@@ -643,3 +643,21 @@ SELECT * FROM participantes_modalidades1;
 
 /*c) Visão 'patrocinios_evento' contendo soma de valor dos patrocínios para o evento*/
 
+CREATE OR REPLACE VIEW patrocinios_evento (soma) AS
+SELECT sum((valor)::numeric(20,2))
+FROM patrocinador, patrocinio
+WHERE patrocinador.cnpj=patrocinio.cnpj;
+
+SELECT * FROM patrocinios_evento;
+
+/*d) Visão 'patrocinios_atletas1' contendo para cada atleta seu nome e a quantidade de patrocinadores
+associados ao atleta;*/
+
+CREATE OR REPLACE VIEW patrocionios_atletas1 (nome, quantidade) AS
+SELECT pessoa.nomepessoa, COUNT(*)
+FROM pessoa, patrocinio, atleta
+WHERE pessoa.cpf = atleta.cpf AND 
+atleta.idcompetidor = patrocinio.idcompetidor
+GROUP BY nomepessoa;
+
+SELECT * FROM patrocionios_atletas1;
